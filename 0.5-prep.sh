@@ -70,10 +70,10 @@ fi
 
 if [[ $? != 0 ]];
 then
-  echo "** Group creation script failed"
+  echo "*** Group creation script failed ***"
   exit 1
 else
-  echo "** Groups created"
+  echo "*** Groups created or already there ***"
 fi
 
 ###

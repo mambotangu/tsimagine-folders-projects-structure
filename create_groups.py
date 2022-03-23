@@ -76,8 +76,10 @@ def create_directory_service(user_email):
             "aliases": [  # List of aliases (Read-only)
             ],
         }
-        group_add = service.groups().insert(body=group).execute()
-        print(group_add)
-
+        try:
+          group_add = service.groups().insert(body=group).execute()
+          print("Group created \n", group_add, "\n\n")
+        except Exception as e:
+          print("Something went wrong, group may already exist? Here's the error: \n", e, "\n\n")
 
 create_directory_service(os.environ['ADMIN_EMAIL'])
