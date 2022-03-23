@@ -143,7 +143,7 @@ destroy_step_0() {
 }
 
 # Determine which step to destroy from
-if [ $1 == 0 ] || [ $1 == 7 ]; then
+if [ -z $1 ] || [ $1 == 7 ]; then
   destroy_step_7;
 fi
 
