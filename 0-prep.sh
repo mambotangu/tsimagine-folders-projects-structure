@@ -95,8 +95,13 @@ if [ $? != 0 ]; then
   exit 1
 else
   echo "*** Service account keys created"
+  echo
+  OAUTH2_ID=$(gcloud iam service-accounts describe $ADMIN_SA@$ADMIN_PROJECT_ID.iam.gserviceaccount.com --project $ADMIN_PROJECT_ID | grep oauth2 | awk 'NR==1 {print $2}')
+  echo "*** DOMAIN WIDE DELEGATION INFO"
+  echo "Client ID: $OAUTH2_ID"
+  echo "OAuth scopes: https://www.googleapis.com/auth/admin.directory.group"
+  echo
+  printf "The script has completed successfully. In order to finish provisioning the environment, please follow the instructions in: \n\ndocs/getting_started_fast.md#enable-domain-wide-delegation \n\n"
 fi
-
-printf "The script has completed successfully. In order to finish provisioning the environment, please follow the instructions at: \n\nhttps://docs.google.com/document/d/12t9TsbVwGFIUc0D0I263NqgT3m_pch1PiproqfWCo0M/edit#heading=h.nfzma1molxm2 \n"
 
 exit 0
