@@ -4,6 +4,7 @@ import os
 import sys
 import subprocess
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from oauth2client.service_account import ServiceAccountCredentials
 
 # Email of the Service Account
@@ -70,16 +71,27 @@ def create_directory_service(user_email):
             "name": groups[i],  # Group name
             # Is the group created by admin (Read-only) *
             "adminCreated": True,
-            "directMembersCount": "5",  # Group direct members count
-
             "email": groups[i]+"@"+os.environ['DOMAIN'],  # Email of Group
             "aliases": [  # List of aliases (Read-only)
             ],
         }
         try:
-          group_add = service.groups().insert(body=group).execute()
-          print("Group created \n", group_add, "\n\n")
+            group_add = service.groups().insert(body=group).execute()
+            print("Group created \n", group_add, "\n\n")
+        except HttpError as e:
+            if (e.resp.get('content-type', '').startswith('application/json')):
+                reason = json.loads(e.content).get(
+                    'error').get('errors')[0].get('reason')
+
+                if (reason == 'duplicate'):
+                    print('*** group already exists, trying the next one')
+                else:
+                    print(
+                        "*** There was an error creating the group:\n ", e)
+                    exit(1)
         except Exception as e:
-          print("Something went wrong, group may already exist? Here's the error: \n", e, "\n\n")
+            print("*** Error creating groups: \n", e)
+            exit(1)
+
 
 create_directory_service(os.environ['ADMIN_EMAIL'])
