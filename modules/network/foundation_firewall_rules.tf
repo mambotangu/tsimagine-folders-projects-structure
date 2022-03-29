@@ -53,9 +53,9 @@ resource "google_compute_firewall" "firewall_rule" {
   target_service_accounts = length(each.value.target_service_accounts) > 0 && each.value.rule_direction == "INGRESS" ? each.value.target_service_accounts : length(each.value.source_service_accounts) > 0 && each.value.rule_direction == "EGRESS" ? each.value.source_service_accounts : null
 
   dynamic "log_config" {
-    for_each = can(each.value.firewall_rule.log_config) ? upper(each.value.firewall_rule.log_config) != "DISABLED" ? [1] : [] : []
+    for_each = can(each.value.log_config) ? upper(each.value.log_config) != "DISABLED" ? [1] : [] : []
     content {
-      metadata = each.value.firewall_rule.log_config
+      metadata = each.value.log_config
     }
   }
   dynamic "allow" {
