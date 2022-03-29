@@ -1,7 +1,7 @@
 locals {
   folder_display_name = "fldr-bootstrap"
   labels = {
-    "env" = "bootstrap"
+    "env"  = "bootstrap"
     "type" = "foundation"
   }
 }
