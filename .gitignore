@@ -33,3 +33,5 @@ override.tf.json
 # example: *tfplan*
 
 node_modules
+
+sa-admin-caller.json

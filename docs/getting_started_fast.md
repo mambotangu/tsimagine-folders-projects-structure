@@ -10,7 +10,7 @@
 
 **1. Permissions**
 
-Make sure the **GCP User** who runs the script has the following roles at the org level:
+Make sure the **GCP User** who runs the script has the following roles at the org level. **If you are running this in a SADAess sandbox org you will grant these permissions to your @sada.com account using the @cf-000n.sadaess.com account**
 
 - Billing Account User
 - Org Admin
@@ -23,21 +23,37 @@ Make sure the **GCP User** who runs the script has the following roles at the or
 
 **2. Groups**
 
-Step 1-bootstrap will attempt to create IAM bindings for groups in the GCP organization. These groups MUST exist prior to running step 1. The **`0-prep.sh`** and **`0.5-prep.sh`** scripts should help automate most of these steps.
+Step 1-bootstrap will attempt to create IAM bindings for groups in the GCP organization. These groups MUST exist prior to running step 1. The **`prep.js`** and **`0.5-prep.sh`** scripts should help automate most of these steps.
 
 **Head to the [Execution](#Execution) section if you want to skip explanation of the scripts**
 
-**0-prep.sh**
+**ADC**
+
+These scripts rely on Application default credentials. Please run
 
 ```bash
-# The project ID of the project that will be authorized to make workspace API calls
-export ADMIN_PROJECT_ID=foundation-workspace-$RANDOM_ID
-## IF YOU CHANGE THIS, YOU MUST ALSO CHANGE IT IN THE DESTROY SCRIPT.
-export ADMIN_SA="sa-admin-caller"
-#
-# Your GCP ORG ID
-export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
+gcloud auth application-default login
 ```
+
+and log in with your SADA credentials.
+
+**prep.js**
+
+a node script that will help you set up a project, service account and credentials for automating group creation.
+
+```env
+//Requires an org ID in the .env
+ORGANIZATION = 123456789
+```
+
+once you have an org ID in the .env file, run
+
+```bash
+npm i
+node prep.js
+```
+
+from inside the prepApp folder
 
 # Terraform.tfvars
 
@@ -45,7 +61,7 @@ In each section (1-7) there is a **terraform.tfvars.example** file that needs to
 
 - The **`0.5-prep.sh`** script consolidates all the changes needed in the Terraform code into one script. Open this script as well and edit the top section.
 
-**NOTE**: It is recommended to commit the changes after editing the **`0-prep.sh`** & **`0.5-prep.sh`** files and **before** executing the **`auto_deploy.sh`** script below. This allows for easy rollback if needed.
+**NOTE**: It is recommended to commit the changes after editing the **`prep.js`** & **`0.5-prep.sh`** files and **before** executing the **`auto_deploy.sh`** script below. This allows for easy rollback if needed.
 
 The Domain, BILLING and ORG informations can get gathered on screen for you if you run the **`get-gcp-infos.sh`** script.
 
@@ -67,22 +83,22 @@ export APP_NAME=app1            # Short name of your workload
 
 The specific changes can be found in (the section below)[#customize-parameters]
 
-Additionally, the group names can be altered by editing the names in the `0-prep.sh` script.
+Additionally, the group names can be altered by editing the names in the `prep.js` script.
 
 # Execution
 
-## Update 0-prep.sh then run it
+## Update prep.js then run it
 
 This will the Workspace project, service account and keys that will provision the required groups by the Foundation.
 
 ```bash
-nano 0-prep.sh
-./0-prep.sh
+nano prep.js
+./prep.js
 ```
 
 ## Enable domain wide delegation
 
-You will need to enable domain wide delegation for the service account created in 0-prep.sh so it can create groups for us.
+You will need to enable domain wide delegation for the service account created in prep.js so it can create groups for us.
 
 - Go to : https://admin.google.com/ac/owl and scroll to the bottom and click “MANAGE DOMAIN WIDE DELEGATION”.
 
