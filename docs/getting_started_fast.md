@@ -39,10 +39,9 @@ and log in with your SADA credentials.
 
 **prep.js**
 
-a node script that will help you set up a project, service account and credentials for automating group creation.
+a node script that will help you set up a project, service account and credentials for automating group creation. It is contained in the prepApp folder. It requires an org ID in the .env file.
 
 ```env
-//Requires an org ID in the .env
 ORGANIZATION = 123456789
 ```
 
