@@ -23,7 +23,7 @@ function shell_cmd() {
 // Kick off looking for the foundation workspace project in the target org defined in the .env file
 function Start() {
     const start = new shell_cmd();
-
+    console.log("**Checking to see if there's an existing google workspace project")
     start.execCommand('gcloud projects list --format=json --filter=foundation-workspace').then(res=> {
         const projects = JSON.parse(res)
         for(let i = 0; i<projects.length; i++){
@@ -202,11 +202,11 @@ function pauseForSecondStep(projectId) {
             console.log('Project ID written')
             const callScript = new shell_cmd()
             callScript.execCommand('pip install -r ../createGroups/requirements.txt && python ../createGroups/create_groups.py').then(res => {
-                console.log('\x1b[32m%s\x1b[0m', 'Group creation script ran. Finish the prep by filling out the needed values in helper_scripts/0.5-prep.sh and running it')
+                console.log('\x1b[32m%s\x1b[0m', 'Group creation script ran successfully. Finish the prep by filling out the needed values in helper_scripts/0.5-prep.sh and running it')
                 // return
                 updateTerraformValues()
             }).catch(err => {
-                console.log('script errd', err)
+                console.log('Group creation script had an error', err)
             })
         })
 
@@ -216,7 +216,7 @@ function pauseForSecondStep(projectId) {
 }
 
 function updateTerraformValues() {
-
+    console.log('in update TF function')
     const script = new shell_cmd()
     script.execCommand('sh ../../helper_scripts/0.5-prep.sh').then(res => {
         console.log('You are ready to run the auto deploy')

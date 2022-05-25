@@ -60,7 +60,7 @@ from inside the prepApp folder
 
 - Domain Wide Delegation
 
-You will need to enable domain wide delegation for the service account created in prep.js so it can create groups for us.
+You will need to enable domain wide delegation for the service account created in prep.js so it can create groups for us. **When the prep.js script finishes it will output the URL and values you need.**
 
 Go to : https://admin.google.com/ac/owl and scroll to the bottom and click “MANAGE DOMAIN WIDE DELEGATION”.
 
