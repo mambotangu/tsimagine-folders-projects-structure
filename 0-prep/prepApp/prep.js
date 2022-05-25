@@ -218,10 +218,10 @@ function pauseForSecondStep(projectId) {
 function updateTerraformValues() {
 
     const script = new shell_cmd()
-    script.execCommand('sh ../../0.5-prep.sh').then(res => {
+    script.execCommand('sh ../../helper_scripts/0.5-prep.sh').then(res => {
         console.log('You are ready to run the auto deploy')
     }).catch(err => {
-        console.log('errd on last script. ')
+        console.log('errd on last script. ',err)
     })
 }
 
