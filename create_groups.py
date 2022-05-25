@@ -13,7 +13,7 @@ SERVICE_ACCOUNT_EMAIL = os.environ['ADMIN_SA']+'@' + \
     os.environ['ADMIN_PROJECT_ID'] + '.iam.gserviceaccount.com'
 
 # Path to the Service Account's Private Key file
-SERVICE_ACCOUNT_PKCS12_FILE_PATH = './'+os.environ['ADMIN_SA']+'.p12'
+SERVICE_ACCOUNT_PKCS12_FILE_PATH = './'+os.environ['ADMIN_SA']+'.json'
 
 
 def create_directory_service(user_email):
@@ -25,10 +25,8 @@ def create_directory_service(user_email):
     """
     try:
         print("Getting token...")
-        credentials = ServiceAccountCredentials.from_p12_keyfile(
-            SERVICE_ACCOUNT_EMAIL,
+        credentials = ServiceAccountCredentials.from_json_keyfile_name(
             SERVICE_ACCOUNT_PKCS12_FILE_PATH,
-            'notasecret',
             scopes=['https://www.googleapis.com/auth/admin.directory.group'])
     except NotImplementedError:
         print("** Looks like you're missing pyOpenSSL. Attempting to install it....")
