@@ -1,3 +1,7 @@
+**_Recent updates_**
+
+The 0-prep.sh script is DEPRECATED. It has been replaced by a node script.
+
 # terraform-sada-foundation
 
 This is repo shows how SADA can use shell scripts & Terraform modules to build a GCP foundation, based on the [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf) and combined with SADA best practice.
