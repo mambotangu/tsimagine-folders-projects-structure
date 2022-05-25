@@ -42,7 +42,7 @@ function createWorkspaceProject() {
     var val = Math.floor(1000 + Math.random() * 9000);
     console.log(val);
     String(val)
-    project.execCommand('gcloud projects create foundation-workspace-'+`${val}`+' --display-name=foundation-workspace --organization='+process.env.ORGANIZATION+' --labels=type=foundation').then(res => {
+    project.execCommand('gcloud projects create foundation-workspace-'+`${val}`+' --name=foundation-workspace --organization='+process.env.ORGANIZATION+' --labels=type=foundation').then(res => {
         console.log('res', res)
         console.log('**Project created. Enabling API\'s')
         enableAdmin('foundation-workspace-'+val)
@@ -174,11 +174,11 @@ function createKey(projectId, oauthClientID) {
 }
 
 function sayGoodbye(oauthClientID) {
-    console.log('***FINISHED SUCCESSFULLY!!!')
-    console.info('** DOMAIN WIDE DELEGATION INFO **')
-    console.info('Go to this URL: https://admin.google.com/u/6/ac/owl/domainwidedelegation')
-    console.info('Click Add new and use the values below')
-    console.info('client ID: ', oauthClientID)
-    console.info('OAuth scopes: https://www.googleapis.com/auth/admin.directory.group')
+    console.log('%c***FINISHED SUCCESSFULLY!!!', "color:green")
+    console.info('%c** DOMAIN WIDE DELEGATION INFO **', "color:green")
+    console.info('%cGo to this URL: https://admin.google.com/u/6/ac/owl/domainwidedelegation', "color:blue")
+    console.info('%cClick Add new and use the values below', "color:green")
+    console.info('%cclient ID: ' + oauthClientID, "color:green")
+    console.info('%cOAuth scopes: https://www.googleapis.com/auth/admin.directory.group', "color:green")
     return
 }
