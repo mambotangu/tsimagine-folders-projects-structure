@@ -5,12 +5,12 @@ clear
 # **Update these variables
 ####
 
-export ADMIN_EMAIL="CHANGE_ME" # The email address of a user with Google Admin access. Typically this is the user deploying the foundation
+
 
 # Update these variables per your GCP environment
-export DOMAIN="cf-0005.sadaess.com"       # Your User verified Domain for GCP
-export BILLING_ACCT="01C805-AC04C5-836F50 " # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
-export ORGANIZATION="31925930310 " # Your GCP ORG ID
+export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
+export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
+export ORGANIZATION="CHANGE_ME " # Your GCP ORG ID
 export REGION=US-WEST1          # Region to deploy the initial subnets
 export USE_BUS_CODE="FALSE"      # Set to FALSE to remove the Business Code requirement
 export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 
@@ -87,20 +87,20 @@ echo
 if [[ $USE_BUS_CODE == "TRUE" ]]
 then
   if [ $MAC_OS == "TRUE" ]; then
-    egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
+    egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | xargs sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
   else
-    egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"    
+    egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"    
   fi
 elif [[ $USE_BUS_CODE == "FALSE" ]]
 then
   if [ $MAC_OS == "TRUE" ]
   then
-    egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs sed -i -e 's/${local.business_code}-//g'
-    egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs sed -i -e 's/${local.business_code}_//g'
+    egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ |  xargs sed -i -e 's/${local.business_code}-//g'
+    egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ |  xargs sed -i -e 's/${local.business_code}_//g'
     sed -i -e 's/${local.resource_base_name}-//g' modules/bootstrap_setup/locals.tf
   else
-    egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs -r -0 -l sed -i -e 's/${local.business_code}-//g'
-    egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs -r -0 -l sed -i -e 's/${local.business_code}_//g'    
+    egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ |  xargs -r -0 -l sed -i -e 's/${local.business_code}-//g'
+    egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ |  xargs -r -0 -l sed -i -e 's/${local.business_code}_//g'    
     sed -i -e 's/${local.resource_base_name}-//g' modules/bootstrap_setup/locals.tf
   fi
 else
@@ -115,9 +115,9 @@ echo "*** Replacing App Name"
 echo
 if [ $MAC_OS == "TRUE" ]
 then
-  egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs sed -i -e "s/app-change_me/$APP_NAME_L/g"
+  egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | xargs sed -i -e "s/app-change_me/$APP_NAME_L/g"
 else
-  egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
+  egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | xargs -r -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
 fi
 
 
@@ -125,11 +125,11 @@ echo "*** Replacing Domain and Org"
 echo
 if [ $MAC_OS == "TRUE" ]
 then
-  egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | LC_ALL=C xargs sed -i "" -e "s/example\.com/$DOMAIN/g"
-  egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | LC_ALL=C xargs sed -i "" -e "s/000000000000/$ORGANIZATION/g"
+  egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | LC_ALL=C xargs sed -i "" -e "s/example\.com/$DOMAIN/g"
+  egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | LC_ALL=C xargs sed -i "" -e "s/000000000000/$ORGANIZATION/g"
 else
-  egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/example\.com/$DOMAIN/g"
-  egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/000000000000/$ORGANIZATION/g"
+  egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | xargs -r -0 -l sed -i -e "s/example\.com/$DOMAIN/g"
+  egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | xargs -r -0 -l sed -i -e "s/000000000000/$ORGANIZATION/g"
 fi
 
 
@@ -137,11 +137,11 @@ echo "*** Replacing Region"
 echo
 if [ $MAC_OS == "TRUE" ]
 then
-  egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs sed -i -e "s/US-WEST1/$REGION/g" #does not throw error
-  egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | LC_ALL=C xargs sed -i "" -e "s/us-west1/$REGION_L/g" #throws error
+  egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | xargs sed -i -e "s/US-WEST1/$REGION/g" #does not throw error
+  egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | LC_ALL=C xargs sed -i "" -e "s/us-west1/$REGION_L/g" #throws error
 else
-  egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/US-WEST1/$REGION/g"
-  egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/us-west1/$REGION_L/g"
+  egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | xargs -r -0 -l sed -i -e "s/US-WEST1/$REGION/g"
+  egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ | xargs -r -0 -l sed -i -e "s/us-west1/$REGION_L/g"
 fi
 
 
@@ -150,7 +150,7 @@ echo
 ######
 ## 1-bootstrap
 ######
-cat <<EOF > ./1-bootstrap/terraform.tfvars
+cat <<EOF > ../1-bootstrap/terraform.tfvars
 billing_account = "$BILLING_ACCT"
 organization_id = "$ORGANIZATION"
 users           = ["group:$O_ADMINS"]
@@ -160,7 +160,7 @@ EOF
 ######
 ## 2-organization
 ######
-cat <<EOF > ./2-organization/terraform.tfvars
+cat <<EOF > ../2-organization/terraform.tfvars
 domain = "$DOMAIN"
 organization_id = "$ORGANIZATION"
 billing_admin_group  = "$B_ADMINS"
@@ -175,7 +175,7 @@ EOF
 ######
 ## 3-shared
 ######
-cat <<EOF > ./3-shared/terraform.tfvars
+cat <<EOF > ../3-shared/terraform.tfvars
 billing_account = "$BILLING_ACCT"
 
 ##Groups are created in Google admin and must exist prior to deploying this step.###
@@ -190,7 +190,7 @@ EOF
 ######
 ## 4-dev
 ######
-cat <<EOF > ./4-dev/terraform.tfvars
+cat <<EOF > ../4-dev/terraform.tfvars
 billing_account = "$BILLING_ACCT"
 
 ##Groups are created in Google admin and must exist prior to deploying this step.###
@@ -203,7 +203,7 @@ EOF
 ######
 ## 5-qa
 ######
-cat <<EOF > ./5-qa/terraform.tfvars
+cat <<EOF > ../5-qa/terraform.tfvars
 billing_account = "$BILLING_ACCT"
 
 ##Groups are created in Google admin and must exist prior to deploying this step.###
@@ -216,7 +216,7 @@ EOF
 ######
 ## 6-uat
 ######
-cat <<EOF > ./6-uat/terraform.tfvars
+cat <<EOF > ../6-uat/terraform.tfvars
 billing_account = "$BILLING_ACCT"
 
 ##Groups are created in Google admin and must exist prior to deploying this step.###
@@ -229,7 +229,7 @@ EOF
 ######
 ## 7-prod
 ######
-cat <<EOF > ./7-prod/terraform.tfvars
+cat <<EOF > ../7-prod/terraform.tfvars
 billing_account ="$BILLING_ACCT"
 
 ##Groups are created in Google admin and must exist prior to deploying this step.###
