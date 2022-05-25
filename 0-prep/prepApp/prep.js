@@ -197,7 +197,7 @@ function pauseForSecondStep(projectId) {
 
     const response = prompt('Please enable Domain wide delegation, then type \'y\' to continue\n');
     if(response == 'y') {
-        fs.appendFile('../createGroups/.env', 'ADMIN_PROJECT_ID='+projectId, function(err) {
+        fs.appendFile('../createGroups/.env', '\nADMIN_PROJECT_ID='+projectId, function(err) {
             if (err) throw err;
             console.log('Project ID written')
             const callScript = new shell_cmd()

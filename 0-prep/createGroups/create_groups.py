@@ -3,17 +3,19 @@ import requests
 import os
 import sys
 import subprocess
+from pathlib import Path
+from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from oauth2client.service_account import ServiceAccountCredentials
-
+load_dotenv()
 # Email of the Service Account
 # SERVICE_ACCOUNT_EMAIL = '<ADMIN_SA>@<PROJECT_ID>.iam.gserviceaccount.com'
-SERVICE_ACCOUNT_EMAIL = os.environ['ADMIN_SA']+'@' + \
+SERVICE_ACCOUNT_EMAIL = 'sa-admin-caller'+'@' + \
     os.environ['ADMIN_PROJECT_ID'] + '.iam.gserviceaccount.com'
 
 # Path to the Service Account's Private Key file
-SERVICE_ACCOUNT_PKCS12_FILE_PATH = './'+os.environ['ADMIN_SA']+'.json'
+SERVICE_ACCOUNT_PKCS12_FILE_PATH = './'+'sa-admin-caller'+'.json'
 
 
 def create_directory_service(user_email):

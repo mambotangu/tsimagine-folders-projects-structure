@@ -8,13 +8,13 @@
 
 # Pre-Requisites
 
-See execution instructions for this step [here](0-prep/README.md)
+See execution instructions for this step [here](../0-prep/README.md)
 
 # Terraform.tfvars
 
 In each section (1-7) there is a **terraform.tfvars.example** file that needs to be copied to **terraform.tfvars** and filled-in with all the required information.
 
-- The **`0.5-prep.sh`** script consolidates all the changes needed in the Terraform code into one script. Open this script as well and edit the top section.
+- The **`0.5-prep.sh`** script consolidates all the changes needed in the Terraform code into one script. If you run it successfully the tfvars should be filled out.
 
 **NOTE**: It is recommended to commit the changes after editing the **`prep.js`** & **`0.5-prep.sh`** files and **before** executing the **`auto_deploy.sh`** script below. This allows for easy rollback if needed.
 
