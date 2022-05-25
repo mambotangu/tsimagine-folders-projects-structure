@@ -1,6 +1,6 @@
 **_Recent updates_**
 
-The 0-prep.sh script is DEPRECATED. It has been replaced by a node script.
+The 0-prep.sh script is DEPRECATED. It has been replaced by a node script. More info can be found in docs/getting_started_fast.md
 
 # terraform-sada-foundation
 
