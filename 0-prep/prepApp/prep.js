@@ -202,9 +202,9 @@ function pauseForSecondStep(projectId) {
             console.log('Project ID written')
             const callScript = new shell_cmd()
             callScript.execCommand('pip install -r ../createGroups/requirements.txt && python ../createGroups/create_groups.py').then(res => {
-                console.log('\x1b[32m%s\x1b[0m', 'Group creation script ran. Finish the prep by filling out the needed values in 0.5-prep.sh and running it')
-                return
-                // updateTerraformValues()
+                console.log('\x1b[32m%s\x1b[0m', 'Group creation script ran. Finish the prep by filling out the needed values in helper_scripts/0.5-prep.sh and running it')
+                // return
+                updateTerraformValues()
             }).catch(err => {
                 console.log('script errd', err)
             })
