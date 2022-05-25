@@ -174,11 +174,11 @@ function createKey(projectId, oauthClientID) {
 }
 
 function sayGoodbye(oauthClientID) {
-    console.log('%c***FINISHED SUCCESSFULLY!!!', "color:green")
-    console.info('%c** DOMAIN WIDE DELEGATION INFO **', "color:green")
-    console.info('%cGo to this URL: https://admin.google.com/u/6/ac/owl/domainwidedelegation', "color:blue")
-    console.info('%cClick Add new and use the values below', "color:green")
-    console.info('%cclient ID: ' + oauthClientID, "color:green")
-    console.info('%cOAuth scopes: https://www.googleapis.com/auth/admin.directory.group', "color:green")
+    console.log('\x1b[32m%s\x1b[0m','***FINISHED SUCCESSFULLY!!!')
+    console.info('\x1b[32m%s\x1b[0m','** DOMAIN WIDE DELEGATION INFO **')
+    console.info('\x1b[34m%s\x1b[0m','Go to this URL: https://admin.google.com/u/6/ac/owl/domainwidedelegation')
+    console.info('\x1b[33m%s\x1b[0m','Click Add new and use the values below:')
+    console.info('\x1b[32m%s\x1b[0m','client ID: ' + oauthClientID)
+    console.info('\x1b[32m%s\x1b[0m','OAuth scopes: https://www.googleapis.com/auth/admin.directory.group')
     return
 }
