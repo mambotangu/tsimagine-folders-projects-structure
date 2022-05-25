@@ -1,4 +1,4 @@
-// This is a template file, these values are fake are for example use only.
+// This is a template file, these values are fake and are for example use only to show how your tfvars files should look. 
 
 // Example organization is: corbo.me
 

@@ -2,57 +2,13 @@
 
 1. [Pre-Reqs](#Pre-Requisites)
 2. [Terraform Variables](#Terraformtfvars)
-3. [Execution](#Execution)
+3. [Deploy](#Deploy)
 4. [Customize Parameters](#Customize-Parameters)
 5. [Post-Deployment](#Post-Deployment)
 
 # Pre-Requisites
 
-**1. Permissions**
-
-Make sure the **GCP User** who runs the script has the following roles at the org level. **If you are running this in a SADAess sandbox org you will grant these permissions to your @sada.com account using the @cf-000n.sadaess.com account**
-
-- Billing Account User
-- Org Admin
-- Folder Admin
-- Org Policy Admin
-- Project Creator
-- Compute Shared VPC Admin
-- Logging Admin
-- Storage Admin
-
-**2. Groups**
-
-Step 1-bootstrap will attempt to create IAM bindings for groups in the GCP organization. These groups MUST exist prior to running step 1. The **`prep.js`** and **`0.5-prep.sh`** scripts should help automate most of these steps.
-
-**Head to the [Execution](#Execution) section if you want to skip explanation of the scripts**
-
-**ADC**
-
-These scripts rely on Application default credentials. Please run
-
-```bash
-gcloud auth application-default login
-```
-
-and log in with your SADA credentials.
-
-**prep.js**
-
-a node script that will help you set up a project, service account and credentials for automating group creation. It is contained in the prepApp folder. It requires an org ID in the .env file.
-
-```env
-ORGANIZATION = 123456789
-```
-
-once you have an org ID in the .env file, run
-
-```bash
-npm i
-node prep.js
-```
-
-from inside the prepApp folder
+See execution instructions for this step [here](0-prep/README.md)
 
 # Terraform.tfvars
 
@@ -64,81 +20,9 @@ In each section (1-7) there is a **terraform.tfvars.example** file that needs to
 
 The Domain, BILLING and ORG informations can get gathered on screen for you if you run the **`get-gcp-infos.sh`** script.
 
-**0.5-prep.sh**
+# Deploy
 
-```bash
-# Update these variables IN THE PREP SCRIPTS per your environment.
-#
-export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation
-export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
-export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
-export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
-export REGION=US-WEST1          # Region to deploy the initial subnets
-export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement
-export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ;
-export APP_NAME=app1            # Short name of your workload
-
-```
-
-The specific changes can be found in (the section below)[#customize-parameters]
-
-Additionally, the group names can be altered by editing the names in the `prep.js` script.
-
-# Execution
-
-## Update prep.js then run it
-
-This will the Workspace project, service account and keys that will provision the required groups by the Foundation.
-
-```bash
-nano prep.js
-./prep.js
-```
-
-## Enable domain wide delegation
-
-You will need to enable domain wide delegation for the service account created in prep.js so it can create groups for us.
-
-- Go to : https://admin.google.com/ac/owl and scroll to the bottom and click “MANAGE DOMAIN WIDE DELEGATION”.
-
-![](img/dwd_1.png)
-
-- Click “Add new”
-
-![](img/dwd_2.png)
-
-- You can find your OAuth client id on the service accounts page of the project created in the previous step. It’s on the far right.
-
-![](img/dwd_3.png)
-
-- Paste the client ID in the Client ID field in Google admin. The OAuth scope we need is: https://www.googleapis.com/auth/admin.directory.group
-
-![](img/dwd_4.png)
-
-- Click “AUTHORIZE” when you have filled in the client ID and the single auth scope.
-
-- You are now ready to edit and run 0.5-prep.sh
-
-## Update 0.5-prep.sh then run it
-
-This will create groups and update your TF values.
-
-```bash
-nano 0.5-prep.sh
-./0.5-prep.sh
-```
-
-## Authenticate to Google
-
-This will set the app credentials required to execute:
-
-```bash
-gcloud auth application-default login
-```
-
-## Deploy
-
-To start the deployment:
+Once pre reqs are complete, to start the deployment:
 
 ```bash
 ./auto_deploy.sh

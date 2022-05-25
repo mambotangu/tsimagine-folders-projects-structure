@@ -5,13 +5,16 @@ This folder contains the script to create a Source Repository in the Bootstrap p
 # Deployment
 
 - From root folder of repo
+
 ```bash
 gcloud config set project PROJECT_ID
 csr/add_to_csr.sh
 ```
+
 # Removal
 
 - From root folder of repo
+
 ```bash
 gcloud config set project PROJECT_ID
 csr/remove_from_csr.sh
