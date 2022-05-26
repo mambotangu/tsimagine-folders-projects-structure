@@ -43,10 +43,17 @@ The **prep.js** & **0.5-prep.sh** scripts will perform all the neccessary steps 
 
 - prep.js
 
-a node script that will help you set up a project, service account and credentials for automating group creation. It is contained in the prepApp folder. It requires an org ID in the .env file.
+a node script that will help you set up a project, service account and credentials for automating group creation. It is contained in the prepApp folder. It requires an org ID which it will pull from an .env file.
 
 ```env
 ORGANIZATION = 123456789
+ADMIN_EMAIL=you@cf-0005.sadaess.com  // the email of someone with admin in workspace
+DOMAIN=cf-0005.sadaess.com
+REGION=us-west1 // defaults to us-west1, can be changed.
+USE_BUS_CODE=false // defaults to false
+BUS_CODE=zzzz // only used if the above is set to true
+APP_NAME=app1 // used in the project naming
+ADMIN_PROJECT_ID=DONT_CHANGE_ME_I_AM_OVERWRITTEN_BY_THE_NODE_SCRIPT  // don't worry about updating this, it'll get written during the prep script
 ```
 
 once you have an org ID in the .env file, run
