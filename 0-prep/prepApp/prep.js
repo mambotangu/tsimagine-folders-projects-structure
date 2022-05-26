@@ -3,8 +3,8 @@
 require("dotenv").config({path: '../createGroups/.env'});
 const fs = require('fs')
 const exec = require('child_process').exec;
-const readline = require('readline')
-const {google} = require('googleapis')
+const {google} = require('googleapis');
+const replace = require('replace-in-file');
 
 // We will wrap all of our shell (gcloud) commands in this async function to ensure they always return before we continue
 function shell_cmd() {
@@ -196,18 +196,25 @@ function pauseForSecondStep(projectId) {
     const prompt = require('prompt-sync')();
 
     const response = prompt('Please enable Domain wide delegation, then type \'y\' to continue\n');
-    if(response == 'y') {
-        fs.appendFile('../createGroups/.env', '\nADMIN_PROJECT_ID='+projectId, function(err) {
-            if (err) throw err;
-            console.log('Project ID written')
+    if(response == 'y' || response == 'Y') {
+
+        const options = {
+            files: '../createGroups/.env',
+            from: /ADMIN_PROJECT_ID=DONT_CHANGE_ME_I_AM_OVERWRITTEN_BY_THE_NODE_SCRIPT/,
+            to: 'ADMIN_PROJECT_ID='+projectId
+        }
+
+        replace(options).then(result => {
             const callScript = new shell_cmd()
             callScript.execCommand('pip install -r ../createGroups/requirements.txt && python ../createGroups/create_groups.py').then(res => {
                 console.log('\x1b[32m%s\x1b[0m', 'Group creation script ran successfully. Finish the prep by filling out the needed values in helper_scripts/0.5-prep.sh and running it')
                 // return
-                updateTerraformValues()
+                updateRegion()
             }).catch(err => {
                 console.log('Group creation script had an error', err)
             })
+        }).catch(err => {
+            console.log('error with replace',err)
         })
 
     }else{
@@ -215,11 +222,11 @@ function pauseForSecondStep(projectId) {
     }
 }
 
-function updateTerraformValues() {
+function updateRegion() {
     console.log('in update TF function')
     const script = new shell_cmd()
-    script.execCommand('sh ../../helper_scripts/0.5-prep.sh').then(res => {
-        console.log('You are ready to run the auto deploy')
+    script.execCommand(' egrep -lRZ "US-WEST1" --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../../ | xargs sed -i -e "s/US-WEST1/'+process.env.REGION+'/g" ').then(res => {
+        console.log('You are ready to run the auto deploy',res)
     }).catch(err => {
         console.log('errd on last script. ',err)
     })
