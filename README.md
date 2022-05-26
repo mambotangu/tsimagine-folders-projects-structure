@@ -2,6 +2,8 @@
 
 If you really wanna read the 10,000 ft overview you can find it [here](docs/overview.md)
 
+**WE CURRENTLY DONT SUPPORT WINDOWS OS's BUT I AM WORKING VERY HARD TO CHANGE THAT**
+
 # Getting Started
 
 The TL;DR Pre-Requisites, customization and execution instructions can be found [here](docs/getting_started.md).
