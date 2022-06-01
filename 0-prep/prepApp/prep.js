@@ -5,7 +5,7 @@ const fs = require('fs')
 const exec = require('child_process').exec;
 const {google} = require('googleapis');
 const replace = require('replace-in-file');
-
+var Account
 // We will wrap all of our shell (gcloud) commands in this async function to ensure they always return before we continue
 function shell_cmd() {
     this.execCommand = function (cmd) {
@@ -20,8 +20,44 @@ function shell_cmd() {
        })
    }
 }
-// Kick off looking for the foundation workspace project in the target org defined in the .env file
+
 function Start() {
+    console.log('Welcome to SADA\'s cloud foundations toolkit!')
+    // checkPermissions()
+    checkForProject()
+}
+
+// Get the user identity 
+function checkAccount() {
+    const checkPerms = new shell_cmd()
+    console.log('Checking your permissions in the org specified in the .env file')
+    checkPerms.execCommand(`gcloud auth list --format=json`).then(res=> {
+        const ident = JSON.parse(res)
+        if (ident.account){
+            Account = ident.account
+            checkPermissions(Account)
+        }
+    }).catch(err=> {
+        console.log('There was an error checking your permissions for the organization')
+    })
+}
+
+// check user IAM permissions in the org
+function checkPermissions(account) {
+    const checkPerms = new shell_cmd()
+    console.log('Checking your permissions in the org specified in the .env file')
+    checkPerms.execCommand(`gcloud organizations get-iam-policy ${process.env.ORGANIZATION} --format=json`).then(res=> {
+        const perms = JSON.parse(res)
+
+        for (let i = 0; i<perms.length; i++) {
+
+        }
+    }).catch(err=> {
+        console.log('There was an error checking your permissions for the organization')
+    })
+}
+// Kick off looking for the foundation workspace project in the target org defined in the .env file
+function checkForProject() {
     const start = new shell_cmd();
     console.log("**Checking to see if there's an existing google workspace project")
     start.execCommand('gcloud projects list --format=json --filter=foundation-workspace').then(res=> {
@@ -233,3 +269,4 @@ function updateRegion() {
 }
 
 Start()
+// checkPermissions()
