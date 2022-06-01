@@ -11,8 +11,8 @@ function checkAccount() {
         const ident = JSON.parse(res)
         for(let i = 0; i<ident.length; i++) {
             if(ident[i].status === "ACTIVE"){
-                console.log('You are currently logged in as ' + ident[i].account)
-                const response = prompt('Is ' + ident[i].account + ' the account you want to deploy with? (type y for yes) ')
+                console.log('You are currently logged in as ' + '\x1b[32m' + ident[i].account + '\x1b[0m')
+                const response = prompt('Is ' + '\x1b[32m' + ident[i].account + '\x1b[0m' +' the account you want to deploy with? Type y for yes, otherwise, type any other key to cancel and log in using a different account. ')
                 if(response == 'y' || response == 'Y') {
                     Account = ident[i].account
                     checkPermissions(Account)
@@ -31,10 +31,30 @@ function checkPermissions(account) {
     console.log('Checking your permissions in the org specified in the .env file')
     checkPerms.execCommand(`gcloud organizations get-iam-policy ${process.env.ORGANIZATION} --format=json`).then(res=> {
         const perms = JSON.parse(res)
-        console.log(perms.bindings)
-        for (let i = 0; i<perms.length; i++) {
-            console.log(perms[i])
+        const permissionsNeeded = [
+            'roles/resourcemanager.organizationAdmin',
+            'roles/resourcemanager.folderAdmin',
+            'roles/resourcemanager.projectCreator',
+            'roles/compute.xpnAdmin',
+            'roles/logging.admin',
+            'roles/storage.admin'
+        ]
+        var permissionsFound = []
+        for (let i = 0; i<perms.bindings.length; i++) {
+            
+            if(permissionsNeeded.includes(perms.bindings[i].role)) {
+                console.log(perms.bindings[i].members)
+                if(perms.bindings[i].members.includes('user:' + account)){
+                    console.log(account, ' has ', perms.bindings[i].role)
+                    permissionsFound.push(perms.bindings[i].role)
+                }
+            }
+
         }
+        if(permissionsFound.length == permissionsNeeded.length) {
+            console.log('You have all the necessary org roles. Please manually ensure you have a billing account to use')
+        }
+
     }).catch(err=> {
         console.log('There was an error checking your permissions for the organization', err)
     })
