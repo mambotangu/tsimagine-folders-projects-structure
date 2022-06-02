@@ -24,7 +24,7 @@ function promptForOrg() {
     replace(options).then(res=> {
         promptForDomain()
     }).catch(err=>{
-        console.log('Error updating the org in the .env file', err)
+        console.log('\x1b[31m%s\x1b[0m','Error updating the org in the .env file', err)
     })
 }
 
@@ -40,7 +40,7 @@ function promptForDomain() {
     replace(options).then(res=> {
         promptForRegion()
     }).catch(err=>{
-        console.log('Error updating the domain in the .env file', err)
+        console.log('\x1b[31m%s\x1b[0m','Error updating the domain in the .env file', err)
     })
 }
 
@@ -56,7 +56,7 @@ function promptForRegion() {
     replace(options).then(res=> {
         promptForUseBusinessCode()
     }).catch(err=>{
-        console.log('Error updating the region in the .env file', err)
+        console.log('\x1b[31m%s\x1b[0m','Error updating the region in the .env file', err)
     })
 }
 
@@ -72,7 +72,7 @@ function promptForUseBusinessCode() {
         replace(options).then(res=> {
             promptForBusinessCode()
         }).catch(err=>{
-            console.log('Error updating the use_bus_code in the .env file', err)
+            console.log('\x1b[31m%s\x1b[0m','Error updating the use_bus_code in the .env file', err)
         })
     }else{
         promptForAppName()
@@ -92,7 +92,7 @@ function promptForBusinessCode() {
     replace(options).then(res=> {
         promptForAppName()
     }).catch(err=>{
-        console.log('Error updating the business code in the .env file', err)
+        console.log('\x1b[31m%s\x1b[0m','Error updating the business code in the .env file', err)
     })  
 }
 
@@ -108,7 +108,7 @@ function promptForAppName() {
     replace(options).then(res=> {
         promptForAdminEmail()
     }).catch(err=>{
-        console.log('Error updating the domain in the .env file', err)
+        console.log('\x1b[31m%s\x1b[0m','Error updating the domain in the .env file', err)
     })
 }
 
@@ -125,7 +125,7 @@ function promptForAdminEmail() {
         require("dotenv").config({path: '../createGroups/.env'});
         permissions.checkAccount()
     }).catch(err=>{
-        console.log('Error updating the admin email in the .env file', err)
+        console.log('\x1b[31m%s\x1b[0m','Error updating the admin email in the .env file', err)
     })
 }
 

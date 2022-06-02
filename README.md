@@ -4,6 +4,13 @@ If you really wanna read the 10,000 ft overview you can find it [here](docs/over
 
 **WE CURRENTLY DONT SUPPORT WINDOWS OS's BUT I AM WORKING VERY HARD TO CHANGE THAT**
 
+_Recent updates_
+
+- .env file prompts
+- Account check
+- Permission check
+- idempotent workspace project checks
+
 # Getting Started
 
 The TL;DR Pre-Requisites, customization and execution instructions can be found [here](docs/getting_started.md).

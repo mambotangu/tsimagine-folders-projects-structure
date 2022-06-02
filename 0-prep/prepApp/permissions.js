@@ -12,16 +12,18 @@ function checkAccount() {
         for(let i = 0; i<ident.length; i++) {
             if(ident[i].status === "ACTIVE"){
                 console.log('You are currently logged in as ' + '\x1b[32m' + ident[i].account + '\x1b[0m')
-                const response = prompt('Is ' + '\x1b[32m' + ident[i].account + '\x1b[0m' +' the account you want to deploy with? Type y for yes, otherwise, type any other key to cancel and log in using a different account. ')
+                const response = prompt('Is ' + '\x1b[32m' + ident[i].account + '\x1b[0m' +' the account you want to deploy with? Type y for yes, otherwise, type any other key to cancel and log in using a different account then run the script again. ')
                 if(response == 'y' || response == 'Y') {
                     Account = ident[i].account
                     checkPermissions(Account)
+                }else{
+                    return false
                 }
             }
         }
 
     }).catch(err=> {
-        console.log('There was an error checking which account you\'re using: ',err)
+        console.log('\x1b[31m%s\x1b[0m','There was an error checking which account you\'re using: ',err)
     })
 }
 
@@ -58,7 +60,7 @@ function checkPermissions(account) {
         }
 
     }).catch(err=> {
-        console.log('There was an error checking your permissions for the organization', err)
+        console.log('\x1b[31m%s\x1b[0m','There was an error checking your permissions for the organization', err)
     })
 }
 
