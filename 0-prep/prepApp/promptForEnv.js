@@ -122,10 +122,26 @@ function promptForAdminEmail() {
     }
 
     replace(options).then(res=> {
-        require("dotenv").config({path: '../createGroups/.env'});
-        permissions.checkAccount()
+        promptForBillingAccount()
     }).catch(err=>{
         console.log('\x1b[31m%s\x1b[0m','Error updating the admin email in the .env file', err)
+    })
+}
+
+function promptForBillingAccount() {
+    const billingAccount = prompt('Enter the billing account that will be linked to the deployed projects: ')
+
+    const options = {
+        files: '../createGroups/.env',
+        from: /BILLING_ACCT=CHANGE_ME/,
+        to: 'BILLING_ACCT='+billingAccount
+    }
+
+    replace(options).then(res=> {
+        require("dotenv").config({path: '../createGroups/.env'});
+        permissions.checkAccount()
+    }).catch(err=> {
+        console.log('\x1b[31m%s\x1b[0m', 'Error updating billing account')
     })
 }
 
