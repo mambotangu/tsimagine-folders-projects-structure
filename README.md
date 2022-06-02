@@ -64,6 +64,11 @@ example-organization/
 
 ### Branching strategy and PR process
 
+- main
+  I intend to try and keep main in a stable, working state.
+- dev-barclay
+  if you're into having the latest and greatest (even if it's broken) try this branch out.
+
 The foundations repo was meant to be built upon, cut a branch, make an improvement and create a pull request or fork for a different type of foudation entirely using this repo as a starting point.
 
 Pull requests are reviewed before merging. Everyone is welcome to open a PR and contribute.

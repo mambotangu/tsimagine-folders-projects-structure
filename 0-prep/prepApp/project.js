@@ -1,27 +1,8 @@
-#! /usr/bin/env node
-
-require("dotenv").config({path: '../createGroups/.env'});
+const {shell_cmd} = require('./shell_cmd')
 const fs = require('fs')
-const exec = require('child_process').exec;
-const {google} = require('googleapis');
-const replace = require('replace-in-file');
-
-// We will wrap all of our shell (gcloud) commands in this async function to ensure they always return before we continue
-function shell_cmd() {
-    this.execCommand = function (cmd) {
-        return new Promise((resolve, reject)=> {
-           exec(cmd, (error, stdout, stderr) => {
-             if (error) {
-                reject(error);
-                return;
-            }
-            resolve(stdout)
-           });
-       })
-   }
-}
+const finish = require('./finish')
 // Kick off looking for the foundation workspace project in the target org defined in the .env file
-function Start() {
+function checkForProject() {
     const start = new shell_cmd();
     console.log("**Checking to see if there's an existing google workspace project")
     start.execCommand('gcloud projects list --format=json --filter=foundation-workspace').then(res=> {
@@ -48,8 +29,6 @@ function Start() {
 function createWorkspaceProject() {
     const project = new shell_cmd()
     var val = Math.floor(1000 + Math.random() * 9000);
-    console.log(val);
-    String(val)
     project.execCommand('gcloud projects create foundation-workspace-'+`${val}`+' --name=foundation-workspace --organization='+process.env.ORGANIZATION+' --labels=type=foundation').then(res => {
         console.log('res', res)
         console.log('**Project created. Enabling API\'s')
@@ -150,10 +129,10 @@ function compareKeyFileToExistingKeys(projectId, oauthClientID) {
             return
         }
         if(keysToDelete.length === 0 && matched === true) {
-            printSuccessMessage(projectId, oauthClientID)
+            finish.printSuccessMessage(projectId, oauthClientID)
         }else if (keysToDelete.length != 0 && matched === true){
             deleteKeys(keysToDelete, projectId, oauthClientID)
-            printSuccessMessage(projectId, oauthClientID)
+            finish.printSuccessMessage(projectId, oauthClientID)
         }
     })
 }
@@ -182,54 +161,4 @@ function createKey(projectId, oauthClientID) {
     })
 }
 
-function printSuccessMessage(projectId, oauthClientID) {
-    console.log('\x1b[32m%s\x1b[0m','***Step 1 finished SUCCESSFULLY!!!')
-    console.info('\x1b[32m%s\x1b[0m','** DOMAIN WIDE DELEGATION INFO **')
-    console.info('\x1b[34m%s\x1b[0m','Go to this URL: https://admin.google.com/u/6/ac/owl/domainwidedelegation')
-    console.info('\x1b[33m%s\x1b[0m','Click Add new and use the values below:')
-    console.info('\x1b[32m%s\x1b[0m','client ID: ' + oauthClientID)
-    console.info('\x1b[32m%s\x1b[0m','OAuth scopes: https://www.googleapis.com/auth/admin.directory.group')
-    pauseForSecondStep(projectId)
-}
-
-function pauseForSecondStep(projectId) {
-    const prompt = require('prompt-sync')();
-
-    const response = prompt('Please enable Domain wide delegation, then type \'y\' to continue\n');
-    if(response == 'y' || response == 'Y') {
-
-        const options = {
-            files: '../createGroups/.env',
-            from: /ADMIN_PROJECT_ID=DONT_CHANGE_ME_I_AM_OVERWRITTEN_BY_THE_NODE_SCRIPT/,
-            to: 'ADMIN_PROJECT_ID='+projectId
-        }
-
-        replace(options).then(result => {
-            const callScript = new shell_cmd()
-            callScript.execCommand('pip install -r ../createGroups/requirements.txt && python ../createGroups/create_groups.py').then(res => {
-                console.log('\x1b[32m%s\x1b[0m', 'Group creation script ran successfully. Finish the prep by filling out the needed values in helper_scripts/0.5-prep.sh and running it')
-                // return
-                updateRegion()
-            }).catch(err => {
-                console.log('Group creation script had an error', err)
-            })
-        }).catch(err => {
-            console.log('error with replace',err)
-        })
-
-    }else{
-        console.log('Response did not equal "y", quitting now. You can re-run this script when you are ready.')
-    }
-}
-
-function updateRegion() {
-    console.log('in update TF function')
-    const script = new shell_cmd()
-    script.execCommand(' egrep -lRZ "US-WEST1" --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../../ | xargs sed -i -e "s/US-WEST1/'+process.env.REGION+'/g" ').then(res => {
-        console.log('You are ready to run the auto deploy',res)
-    }).catch(err => {
-        console.log('errd on last script. ',err)
-    })
-}
-
-Start()
+module.exports = {checkForProject}
