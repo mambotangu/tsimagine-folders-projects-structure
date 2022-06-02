@@ -4,13 +4,11 @@ require("dotenv").config({path: '../createGroups/.env'});
 const fs = require('fs')
 const {google} = require('googleapis');
 const replace = require('replace-in-file');
-const permissions = require('./permissions')
-
-
+const setEnv = require('./promptForEnv')
 
 function Start() {
     console.log('Welcome to SADA\'s cloud foundations toolkit!')
-    permissions.checkAccount()
+    setEnv.promptForEnv()
 }
 
 // Kick off looking for the foundation workspace project in the target org defined in the .env file

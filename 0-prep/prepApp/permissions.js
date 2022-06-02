@@ -43,9 +43,8 @@ function checkPermissions(account) {
         for (let i = 0; i<perms.bindings.length; i++) {
             
             if(permissionsNeeded.includes(perms.bindings[i].role)) {
-                console.log(perms.bindings[i].members)
                 if(perms.bindings[i].members.includes('user:' + account)){
-                    console.log(account, ' has ', perms.bindings[i].role)
+
                     permissionsFound.push(perms.bindings[i].role)
                 }
             }
@@ -53,6 +52,10 @@ function checkPermissions(account) {
         }
         if(permissionsFound.length == permissionsNeeded.length) {
             console.log('You have all the necessary org roles. Please manually ensure you have a billing account to use')
+        }else{
+            console.log('You are missing 1 or more permissions needed to deploy the foundation. Please compare these lists to see which permissions you need to add to your account')
+            console.log('Permissions found: ', permissionsFound.sort())
+            console.log('Permissions needed: ', permissionsNeeded.sort())
         }
 
     }).catch(err=> {
