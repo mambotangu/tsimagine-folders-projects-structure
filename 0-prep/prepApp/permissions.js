@@ -1,12 +1,12 @@
 var Account
-require("dotenv").config({path: '../createGroups/.env'});
+// require("dotenv").config({path: '../createGroups/.env'});
 const {shell_cmd} = require('./shell_cmd')
 const prompt = require('prompt-sync')();
-
+const project = require('./project')
 // Get the user identity 
 function checkAccount() {
     const checkPerms = new shell_cmd()
-    console.log('Checking your permissions in the org specified in the .env file')
+    console.log('Checking which account you are using')
     checkPerms.execCommand(`gcloud auth list --format=json`).then(res=> {
         const ident = JSON.parse(res)
         for(let i = 0; i<ident.length; i++) {
@@ -44,14 +44,13 @@ function checkPermissions(account) {
             
             if(permissionsNeeded.includes(perms.bindings[i].role)) {
                 if(perms.bindings[i].members.includes('user:' + account)){
-
                     permissionsFound.push(perms.bindings[i].role)
                 }
             }
-
         }
         if(permissionsFound.length == permissionsNeeded.length) {
             console.log('You have all the necessary org roles. Please manually ensure you have a billing account to use')
+            project.checkForProject()
         }else{
             console.log('You are missing 1 or more permissions needed to deploy the foundation. Please compare these lists to see which permissions you need to add to your account')
             console.log('Permissions found: ', permissionsFound.sort())
