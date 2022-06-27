@@ -25,7 +25,7 @@ function pauseForSecondStep(projectId) {
 
         replace(options).then(result => {
             const callScript = new shell_cmd()
-            callScript.execCommand('pip install -r ../createGroups/requirements.txt && python ../createGroups/create_groups.py').then(res => {
+            callScript.execCommand('pip3 install -r ../createGroups/requirements.txt && python3 ../createGroups/create_groups.py').then(res => {
                 console.log('\x1b[32m%s\x1b[0m', 'Group creation script ran successfully. Finish the prep by filling out the needed values in helper_scripts/0.5-prep.sh and running it')
                 return
                 // updateRegion() 

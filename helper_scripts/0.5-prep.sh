@@ -97,11 +97,11 @@ then
   then
     egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ |  xargs sed -i -e 's/${local.business_code}-//g'
     egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ |  xargs sed -i -e 's/${local.business_code}_//g'
-    sed -i -e 's/${local.resource_base_name}-//g' modules/bootstrap_setup/locals.tf
+    sed -i -e 's/${local.resource_base_name}-//g' ../modules/bootstrap_setup/locals.tf
   else
     egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ |  xargs -r -0 -l sed -i -e 's/${local.business_code}-//g'
     egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" ../ |  xargs -r -0 -l sed -i -e 's/${local.business_code}_//g'    
-    sed -i -e 's/${local.resource_base_name}-//g' modules/bootstrap_setup/locals.tf
+    sed -i -e 's/${local.resource_base_name}-//g' ../modules/bootstrap_setup/locals.tf
   fi
 else
   echo
