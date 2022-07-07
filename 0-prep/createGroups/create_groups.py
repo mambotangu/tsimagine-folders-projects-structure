@@ -33,7 +33,7 @@ def create_directory_service(user_email):
     except NotImplementedError:
         print("** Looks like you're missing pyOpenSSL. Attempting to install it....")
         try:
-            subprocess.check_call([sys.executable, '-m', 'pip', 'install',
+            subprocess.check_call([sys.executable, '-m', 'pip3', 'install',
                                    'pyOpenSSL'])
             print("** pyOpenSSL installed. Restarting script")
             os.system('python3 create_groups.py')
