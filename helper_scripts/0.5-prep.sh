@@ -10,7 +10,7 @@ clear
 # Update these variables per your GCP environment
 export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
 export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
-export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
+export ORGANIZATION="CHANGE_ME " # Your GCP ORG ID
 export REGION=US-WEST1          # Region to deploy the initial subnets
 export USE_BUS_CODE="FALSE"      # Set to FALSE to remove the Business Code requirement
 export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 

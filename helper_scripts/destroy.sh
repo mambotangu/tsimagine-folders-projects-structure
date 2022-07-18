@@ -138,7 +138,7 @@ destroy_step_0() {
   echo
   gcloud projects delete $GCP_WS_PROJECT_ID --quiet
   # Delete the service acocunt keys associated wit the foundations workspace project service account. 
-  rm -f 0-prep/prepApp/sa-admin-caller.json
+  rm sa-admin-caller.json
   #
 }
 
