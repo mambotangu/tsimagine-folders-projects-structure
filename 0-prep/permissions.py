@@ -22,12 +22,28 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
+def print_colored(str_to_output: str, color: str):
+    if(color == "grn"):
+        color = bcolors.OKGREEN
+    elif(color == "prpl"):
+        color = bcolors.HEADER
+    elif(color == "blu"):
+        color = bcolors.OKBLUE
+    elif(color == "red"):
+        color = bcolors.FAIL
+    elif(color == "yllw"):
+        color = bcolors.WARNING
+    else:
+        color = bcolors.BOLD
+    print(color + str_to_output + bcolors.ENDC)
+
+
 def invoke_subprocess(command_str: str, capture_output: bool = False, text: bool = False):
     return subprocess.run(command_str.split(" "), capture_output=capture_output, text=text)
 
 
 def check_account():
-    print(bcolors.OKGREEN + "Checking which account you're using..." + bcolors.ENDC)
+    print_colored("Checking which account you're using...", "grn")
     auth_list_command = "gcloud auth list --format=json"
     auth_output = subprocess.check_output(
         shlex.split(auth_list_command), shell=True)
