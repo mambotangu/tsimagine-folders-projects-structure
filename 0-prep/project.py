@@ -1,10 +1,10 @@
-from venv import create
-from helpers import *
 import subprocess
-import shlex
+from asyncio.windows_events import NULL
 import os
+from helpers import *
+import shlex
+from finish import *
 import json
-import difflib
 
 from random import randint
 
@@ -26,11 +26,11 @@ def check_for_project(org_id):
             enable_admin(project["projectId"])
             return
     print_colored("No workspace project found", "prpl")
-    # create_workspace_project(org_id)
+    create_workspace_project(org_id)
 
 
 def create_workspace_project(org_id):
-    print("Creating workspace project...")
+    print_colored("Creating workspace project...", "prpl")
     suffix = randint(100, 999)
     create_prj_cmd = "gcloud projects create foundation-workspace-" + \
         str(suffix) + " --name=foundation-workspace --organization=" + \
@@ -38,10 +38,10 @@ def create_workspace_project(org_id):
     try:
         create_prj_output = subprocess.check_output(
             shlex.split(create_prj_cmd), shell=True)
-        print(create_prj_output)
-    except:
+        enable_admin("foundation-workspace-" + str(suffix))
+    except Exception as e:
         print_colored("Error creating project...", "red")
-        print(create_prj_output)
+        print(e)
 
 
 def enable_admin(project_id):
@@ -97,7 +97,7 @@ def create_service_account(project_id):
     try:
         sa_cmd_output = subprocess.check_output(
             shlex.split(create_sa_cmd), shell=True)
-        print_colored("SA created. Getting oauth client ID", "grn")
+        print_colored("SA created", "grn")
         check_for_service_account(project_id)
     except Exception as e:
         print_colored("Error creating service account...", "red")
@@ -109,15 +109,72 @@ def check_for_key_file(project_id, clientId):
     try:
         files_cmd_output = subprocess.check_output(
             "ls", shell=True)
-        if(str(files_cmd_output).find("sa-admin-caller")):
-            print('Key found')
+        if(str(files_cmd_output).find("sa-admin-caller") != -1):
+            print_colored("key found", "red")
+            # print("Key found")
+            compare_key_to_existing(project_id, clientId)
         else:
             print("No key found.")
-            create_sa_key(project_id)
+            create_sa_key(project_id, clientId)
     except Exception as e:
         print_colored("Error checking for key file", "red")
         print(e)
 
 
-def create_sa_key(project_id):
-    print("creating key")
+def create_sa_key(project_id, clientId):
+    print_colored("creating key", "prpl")
+    create_key_cmd = "gcloud iam service-accounts keys create ./sa-admin-caller.json --key-file-type=json --iam-account=sa-admin-caller@" + \
+        project_id + ".iam.gserviceaccount.com"
+    try:
+        create_key_output = subprocess.check_output(
+            shlex.split(create_key_cmd), shell=True)
+        print_colored("key created", "grn")
+        print(create_key_output)
+        compare_key_to_existing(project_id, clientId)
+    except Exception as e:
+        print_colored("error creating key", "red")
+        print(e)
+
+
+def compare_key_to_existing(project_id, clientId):
+    keys_to_delete = []
+    key_file = open("./sa-admin-caller.json")
+    key_json = json.load(key_file)
+    key_id = key_json["private_key_id"]
+    key_check_cmd = "gcloud iam service-accounts keys list --format=json --iam-account=sa-admin-caller@" + \
+        project_id + ".iam.gserviceaccount.com"
+    matched = False
+    try:
+        key_check_output = subprocess.check_output(
+            shlex.split(key_check_cmd), shell=True)
+        keys_json = json.loads(key_check_output)
+        for key in keys_json:
+            id = str(key["name"]).split("/").pop()
+            if(id == key_id):
+                # print_colored("Key id matched. Good to go.", "grn")
+                print("Key id matched. Good to go.")
+
+                matched = True
+            if(key["keyType"] != "SYSTEM_MANAGED" and id != key_id):
+                keys_to_delete.append(id)
+        if(matched == False):
+            create_sa_key(project_id, clientId)
+        elif(keys_to_delete == 0 and matched == True):
+            success_message(project_id, clientId)
+        elif(keys_to_delete != 0 and matched == True):
+            delete_keys(keys_to_delete, project_id)
+            success_message(project_id, clientId)
+    except Exception as e:
+        print_colored("error checking existing keys", "red")
+        print(e)
+
+
+def delete_keys(keys, project_id):
+    try:
+        for key in keys:
+            del_cmd = "gcloud iam service-accounts keys delete" + key + \
+                " --iam-account=sa-admin-caller@" + project_id + \
+                ".iam.gserviceaccount.com --quiet"
+            subprocess.run(shlex.split(del_cmd), shell=True)
+    except Exception as e:
+        print("error deleting keys", e)

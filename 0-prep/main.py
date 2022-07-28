@@ -32,6 +32,8 @@ def create_env_file():
         cwd = os.getcwd()
         try:
             f = open(cwd + "/createGroups/.env", "x")
+            print_colored(".env created", "grn")
+            writeValuesToEnv()
         except:
             print_colored(
                 "Looks like a .env file already exists. No problem, let's write what we need to it.", "yllw")

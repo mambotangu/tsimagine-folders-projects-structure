@@ -2,18 +2,12 @@ from ast import Sub
 import typer
 import subprocess
 import sys
-import setupEnv
-import permissions
 import project
 import shlex
 import json
 from helpers import *
 from rich.prompt import Prompt
 import os
-
-
-def invoke_subprocess(command_str: str, capture_output: bool = False, text: bool = False):
-    return subprocess.run(command_str.split(" "), capture_output=capture_output, text=text)
 
 
 def check_account(org_id):
@@ -35,7 +29,6 @@ def check_account(org_id):
                 return
             else:
                 return False
-
                 # account_to_use = Prompt.ask("Which account will you use to deploy?")
     print_colored(
         "The following accounts were detected but none are currently active.\n", "yllw")
