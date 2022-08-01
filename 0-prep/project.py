@@ -1,6 +1,4 @@
 import subprocess
-from asyncio.windows_events import NULL
-import os
 from helpers import *
 import shlex
 from finish import *
@@ -110,7 +108,7 @@ def check_for_key_file(project_id, clientId):
         files_cmd_output = subprocess.check_output(
             "ls", shell=True)
         if(str(files_cmd_output).find("sa-admin-caller") != -1):
-            print_colored("key found", "red")
+            print_colored("key found", "grn")
             # print("Key found")
             compare_key_to_existing(project_id, clientId)
         else:
