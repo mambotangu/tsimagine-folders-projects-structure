@@ -15,8 +15,10 @@ def check_for_project(org_id):
     print_colored(
         "Checking for an existing workspace-foundation project...", "prpl")
     list_projects_cmd = "gcloud projects list --format=json --filter=foundation-workspace"
+    # list_projects_output = subprocess.check_output(
+    #     shlex.split(list_projects_cmd), shell=True)
     list_projects_output = subprocess.check_output(
-        shlex.split(list_projects_cmd), shell=True)
+        list_projects_cmd, shell=True)
     list_projects_json = json.loads(list_projects_output)
     for project in list_projects_json:
         if(project["parent"]["id"] == org_id and project["lifecycleState"] == "ACTIVE"):
@@ -34,8 +36,9 @@ def create_workspace_project(org_id):
         str(suffix) + " --name=foundation-workspace --organization=" + \
         org_id + " --labels=type=foundation"
     try:
-        create_prj_output = subprocess.check_output(
-            shlex.split(create_prj_cmd), shell=True)
+        # create_prj_output = subprocess.check_output(
+        #     shlex.split(create_prj_cmd), shell=True)
+        create_prj_output = subprocess.check_output(create_prj_cmd, shell=True)
         enable_admin("foundation-workspace-" + str(suffix))
     except Exception as e:
         print_colored("Error creating project...", "red")
@@ -46,8 +49,10 @@ def enable_admin(project_id):
     print_colored("Enabling workspace admin API...", "prpl")
     enable_api_cmd = "gcloud services enable admin.googleapis.com --project=" + project_id
     try:
+        # enable_api_output = subprocess.check_output(
+        #     shlex.split(enable_api_cmd), shell=True)
         enable_api_output = subprocess.check_output(
-            shlex.split(enable_api_cmd), shell=True)
+            enable_api_cmd, shell=True)
         print_colored("Successfully enabled admin API.", "grn")
         enable_iam(project_id)
     except Exception as e:
@@ -59,8 +64,10 @@ def enable_iam(project_id):
     print_colored("Enabling IAM API...", "prpl")
     enable_iam_cmd = "gcloud services enable iam.googleapis.com --project=" + project_id
     try:
+        # enable_iam_output = subprocess.check_output(
+        #     shlex.split(enable_iam_cmd), shell=True)
         enable_iam_output = subprocess.check_output(
-            shlex.split(enable_iam_cmd), shell=True)
+            enable_iam_cmd, shell=True)
         print_colored("Successfully enabled IAM API.", "grn")
         check_for_service_account(project_id)
     except Exception as e:
@@ -73,8 +80,10 @@ def check_for_service_account(project_id):
         "Checking for service account in foundation workspace project...", "prpl")
     sa_list_cmd = "gcloud iam service-accounts list --format=json --project=" + project_id
     try:
+        # sa_list_output = subprocess.check_output(
+        #     shlex.split(sa_list_cmd), shell=True)
         sa_list_output = subprocess.check_output(
-            shlex.split(sa_list_cmd), shell=True)
+            sa_list_cmd, shell=True)
         sa_list_json = json.loads(sa_list_output)
         for sa in sa_list_json:
             if(sa["email"] == "sa-admin-caller@" + project_id + ".iam.gserviceaccount.com"):
@@ -93,8 +102,10 @@ def create_service_account(project_id):
     print_colored("Creating service account...", "prpl")
     create_sa_cmd = "gcloud iam service-accounts create sa-admin-caller --description='For making workspace API calls' --display-name='workspace-admin-api-caller' --project=" + project_id
     try:
+        # sa_cmd_output = subprocess.check_output(
+        #     shlex.split(create_sa_cmd), shell=True)
         sa_cmd_output = subprocess.check_output(
-            shlex.split(create_sa_cmd), shell=True)
+            create_sa_cmd, shell=True)
         print_colored("SA created", "grn")
         check_for_service_account(project_id)
     except Exception as e:
@@ -124,8 +135,10 @@ def create_sa_key(project_id, clientId):
     create_key_cmd = "gcloud iam service-accounts keys create ./sa-admin-caller.json --key-file-type=json --iam-account=sa-admin-caller@" + \
         project_id + ".iam.gserviceaccount.com"
     try:
+        # create_key_output = subprocess.check_output(
+        #     shlex.split(create_key_cmd), shell=True)
         create_key_output = subprocess.check_output(
-            shlex.split(create_key_cmd), shell=True)
+            create_key_cmd, shell=True)
         print_colored("key created", "grn")
         print(create_key_output)
         compare_key_to_existing(project_id, clientId)
@@ -144,7 +157,9 @@ def compare_key_to_existing(project_id, clientId):
     matched = False
     try:
         key_check_output = subprocess.check_output(
-            shlex.split(key_check_cmd), shell=True)
+            key_check_cmd, shell=True)
+        # key_check_output = subprocess.check_output(
+        #     shlex.split(key_check_cmd), shell=True)
         keys_json = json.loads(key_check_output)
         for key in keys_json:
             id = str(key["name"]).split("/").pop()
@@ -173,6 +188,6 @@ def delete_keys(keys, project_id):
             del_cmd = "gcloud iam service-accounts keys delete" + key + \
                 " --iam-account=sa-admin-caller@" + project_id + \
                 ".iam.gserviceaccount.com --quiet"
-            subprocess.run(shlex.split(del_cmd), shell=True)
+            subprocess.run(del_cmd, shell=True)
     except Exception as e:
         print("error deleting keys", e)

@@ -38,8 +38,9 @@ def check_account(org_id):
 def check_permissions(org_id, identity):
     print_colored("Checking permissions...", "prpl")
     perms_list_command = "gcloud organizations get-iam-policy " + org_id + " --format=json"
-    perms_output = subprocess.check_output(
-        shlex.split(perms_list_command), shell=True)
+    # perms_output = subprocess.check_output(
+    #     shlex.split(perms_list_command), shell=True)
+    perms_output = subprocess.check_output(perms_list_command, shell=True)
     perms_output_json = json.loads(perms_output)
     perms_needed = ['roles/resourcemanager.organizationAdmin',
                     'roles/resourcemanager.folderAdmin',
