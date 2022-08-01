@@ -47,7 +47,8 @@ def pause_for_second_step(project_id):
 def create_groups():
     create_groups_cmd = "pip install -r ./createGroups/requirements.txt && python ./createGroups/create_groups.py"
     try:
-        subprocess.run(shlex.split(create_groups_cmd), shell=True)
+        # subprocess.run(shlex.split(create_groups_cmd), shell=True)
+        subprocess.run(create_groups_cmd, shell=True)
         print("Groups created! Run 0.5-prep to finish prepping your environment")
     except Exception as e:
         print("error on create_groups", e)
