@@ -1,6 +1,3 @@
-from ast import Sub
-from asyncio.windows_events import NULL
-from asyncore import write
 import typer
 import permissions
 from helpers import *
@@ -55,7 +52,7 @@ def writeValuesToEnv():
                 org_id = x.split('=')
                 org_id = org_id[1].strip()
                 break
-        if(org_id == NULL):
+        if(org_id == None):
             print_colored("An org ID was not found in the .env file...", "red")
             exit(1)
         permissions.check_account(org_id)
