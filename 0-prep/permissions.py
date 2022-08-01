@@ -1,20 +1,18 @@
-from ast import Sub
 import typer
 import subprocess
-import sys
 import project
 import shlex
 import json
 from helpers import *
-from rich.prompt import Prompt
-import os
+# from rich.prompt import Prompt
 
 
 def check_account(org_id):
     print_colored("Checking which account you're using...", "prpl")
     auth_list_command = "gcloud auth list --format=json"
-    auth_output = subprocess.check_output(
-        shlex.split(auth_list_command), shell=True)
+    auth_output = subprocess.check_output(auth_list_command, shell=True)
+    # auth_output = subprocess.check_output(
+    #     shlex.split(auth_list_command), shell=True)
     auth_output_json = json.loads(auth_output)
 
     for idents in auth_output_json:
