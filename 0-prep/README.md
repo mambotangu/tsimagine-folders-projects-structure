@@ -4,7 +4,7 @@
 
 ```
 cd ~/proserv-foundations/0-prep
-python main.py
+python main.py start
 ```
 
 Answer the prompts.
