@@ -105,7 +105,7 @@ then
   fi
 else
   echo
-  echo ":( Invalid Business Code Usage value, exiting."
+  echo ":\( Invalid Business Code Usage value, exiting."
   echo
   exit 0;
 fi
