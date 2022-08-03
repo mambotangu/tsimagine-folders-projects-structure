@@ -185,7 +185,7 @@ def compare_key_to_existing(project_id, clientId):
 def delete_keys(keys, project_id):
     try:
         for key in keys:
-            del_cmd = "gcloud iam service-accounts keys delete" + key + \
+            del_cmd = "gcloud iam service-accounts keys delete " + key + \
                 " --iam-account=sa-admin-caller@" + project_id + \
                 ".iam.gserviceaccount.com --quiet"
             subprocess.run(del_cmd, shell=True)

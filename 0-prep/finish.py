@@ -29,7 +29,7 @@ def pause_for_second_step(project_id):
     if(dwd_confirm):
         try:
             cwd = os.getcwd()
-            env_file = open(cwd + "/createGroups/.env", "r")
+            env_file = open("./createGroups/.env", "r")
             lines = env_file.readlines()
             for line in lines:
                 print(line)
@@ -39,6 +39,7 @@ def pause_for_second_step(project_id):
             print("addming admin project id to env file")
             env_file = open(cwd + "/createGroups/.env", "a")
             env_file.write("\nADMIN_PROJECT_ID="+project_id)
+            env_file.close()
             create_groups()
         except Exception as e:
             print("error creating groups", e)
@@ -49,6 +50,6 @@ def create_groups():
     try:
         # subprocess.run(shlex.split(create_groups_cmd), shell=True)
         subprocess.run(create_groups_cmd, shell=True)
-        print("Groups created! Run 0.5-prep to finish prepping your environment")
+        # print("Groups created! Run 0.5-prep to finish prepping your environment")
     except Exception as e:
         print("error on create_groups", e)
