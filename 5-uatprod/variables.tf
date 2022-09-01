@@ -9,3 +9,11 @@ variable "developer_group_name" {
 variable "devops_group_name" {
 
 }
+
+variable "folder_id" {
+  
+}
+
+variable "host_project_id" {
+  
+}

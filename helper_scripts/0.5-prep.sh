@@ -8,13 +8,13 @@ clear
 
 
 # Update these variables per your GCP environment
-export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
-export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
-export ORGANIZATION="CHANGE_ME " # Your GCP ORG ID
-export REGION=US-WEST1          # Region to deploy the initial subnets
+export DOMAIN="tradingscreen.com"       # Your User verified Domain for GCP
+export BILLING_ACCT="0192E9-F5AD31-237B24" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
+export ORGANIZATION="868805561528" # Your GCP ORG ID
+export REGION=US-EAST1          # Region to deploy the initial subnets
 export USE_BUS_CODE="FALSE"      # Set to FALSE to remove the Business Code requirement
 export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 
-export APP_NAME=app1            # Short name of your workload
+export APP_NAME=rrc-margin            # Short name of your workload
 
 
 ###
@@ -201,9 +201,9 @@ EOF
 
 
 ######
-## 5-qa
+## 5-uatprod
 ######
-cat <<EOF > ../5-qa/terraform.tfvars
+cat <<EOF > ../5-uatprod/terraform.tfvars
 billing_account = "$BILLING_ACCT"
 
 ##Groups are created in Google admin and must exist prior to deploying this step.###
@@ -214,22 +214,9 @@ EOF
 
 
 ######
-## 6-uat
+## 6-prod
 ######
-cat <<EOF > ../6-uat/terraform.tfvars
-billing_account = "$BILLING_ACCT"
-
-##Groups are created in Google admin and must exist prior to deploying this step.###
-admin_group_name     = "$ADMINS"
-developer_group_name = "$DEVELOPERS"
-devops_group_name    = "$DEV_OPS"
-EOF
-
-
-######
-## 7-prod
-######
-cat <<EOF > ../7-prod/terraform.tfvars
+cat <<EOF > ../6-prod/terraform.tfvars
 billing_account ="$BILLING_ACCT"
 
 ##Groups are created in Google admin and must exist prior to deploying this step.###

@@ -1,35 +1,35 @@
-module "rrc-margin_dev_project" {
+module "rrc-margin_uatprod_project" {
   source             = "../modules/projects"
   name               = local.rrc-margin_project_name
   project_id         = local.rrc-margin_project_name
   services           = local.rrc-margin_service_apis
   billing_account    = var.billing_account
-  #folder_id          = data.terraform_remote_state.bootstrap1.outputs.rtcr_sub_folders.fldr-rtrc-dev.name
+  #folder_id       = data.terraform_remote_state.bootstrap1.outputs.rtcr_sub_folders.fldr-rtrc-uatprod.name
   folder_id          = var.folder_id
   labels             = local.project_terraform_labels
   has_sa             = true
   sa_account_id      = local.rrc-margin_project_name
   is_service_project = true
-  host_project_id    = var.host_project_id
+  host_project_id = var.host_project_id
 }
 
-module "rrc-margin_dev_admin_iam" {
+module "rrc-margin_uatprod_admin_iam" {
   source           = "../modules/iam/projects-iam"
-  project_id       = trimprefix(module.rrc-margin_dev_project.project_id, "projects/")
+  project_id       = trimprefix(module.rrc-margin_uatprod_project.project_id, "projects/")
   admin_roles      = local.admin_roles
   admin_group_name = var.admin_group_name
 }
 
-module "rrc-margin_dev_developer_iam" {
+module "rrc-margin_uatprod_developer_iam" {
   source               = "../modules/iam/projects-iam"
-  project_id           = trimprefix(module.rrc-margin_dev_project.project_id, "projects/")
+  project_id           = trimprefix(module.rrc-margin_uatprod_project.project_id, "projects/")
   developer_roles      = local.developer_roles
   developer_group_name = var.developer_group_name
 }
 
-module "rrc-margin_dev_devops_iam" {
+module "rrc-margin_uatprod_devops_iam" {
   source            = "../modules/iam/projects-iam"
-  project_id        = trimprefix(module.rrc-margin_dev_project.project_id, "projects/")
+  project_id        = trimprefix(module.rrc-margin_uatprod_project.project_id, "projects/")
   devops_roles      = local.devops_roles
   devops_group_name = var.devops_group_name
 }

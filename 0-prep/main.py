@@ -63,7 +63,7 @@ def writeValuesToEnv():
             bcolors.HEADER + "Enter a workspace admin email" + bcolors.ENDC)
         domain = admin_email.split("@")
         region = Prompt.ask(
-            bcolors.HEADER + "Primary region, E.G. 'us-west1'" + bcolors.ENDC)
+            bcolors.HEADER + "Primary region, E.G. 'us-east1'" + bcolors.ENDC)
         app_name = Prompt.ask(bcolors.HEADER +
                               "Enter the app name, E.G. 'web' (without quotes) or 'app1' try to keep it short for character limits sake" + bcolors.ENDC)
 

@@ -19,9 +19,10 @@ $(yellowprint '1)') Run 1-bootstrap
 $(yellowprint '2)') Run 2-organization
 $(yellowprint '3)') Run 3-shared
 $(yellowprint '4)') Run 4-dev
-$(yellowprint '5)') Run 5-qa
-$(yellowprint '6)') Run 6-uat
-$(yellowprint '7)') Run 7-prod
+$(yellowprint '5)') Run 5-uatprod
+$(yellowprint '6)') Run 6-prod
+$(yellowprint '7)') Run 7-sandbox
+
 
 $(redprint '0)') Exit
 Choose an option:  "
@@ -51,22 +52,25 @@ Choose an option:  "
         echo "Completed dev"
         mainmenu
         ;;
+  
     5)
-        echo "Running qa"
-        run_X_env "5-qa"
-        echo "Completed qa"
+        echo "Running uatprod"
+        run_X_env "5-uatprod"
+        echo "Completed uatprod"
         mainmenu
         ;;
+        
     6)
-        echo "Running uat"
-        run_X_env "6-uat"
-        echo "Completed uat"
+        echo "Running prod"
+        run_X_env "6-prod"
+        echo "Completed prod"
         mainmenu
         ;;
+
     7)
-        echo "Running prod"
-        run_X_env "7-prod"
-        echo "Completed prod"
+        echo "Running sandbox"
+        run_X_env "7-sandbox"
+        echo "Completed sandbox"
         mainmenu
         ;;
     s)
@@ -92,17 +96,17 @@ Choose an option:  "
         run_X_env "4-dev"
         echo "Completed dev"
 
-        echo "Running qa"
-        run_X_env "5-qa"
-        echo "Completed qa"
-
-        echo "Running uat"
-        run_X_env "6-uat"
-        echo "Completed uat"
+        echo "Running uatprod"
+        run_X_env "5-uatprod"
+        echo "Completed uatprod"
 
         echo "Running prod"
-        run_X_env "7-prod"
+        run_X_env "6-prod"
         echo "Completed prod"
+
+        echo "Running sandbox"
+        run_X_env "7-sandbox"
+        echo "Completed sandbox"
         mainmenu
         ;;
     0)
@@ -279,15 +283,15 @@ THE_ENV=$1
 case $THE_ENV in
   4-dev)
     PREFIX="tf_state_dev"
+    ;; 
+  5-uatprod)
+    PREFIX="tf_state_uatprod"
     ;;
-  5-qa)
-    PREFIX="tf_state_qa"
-    ;;  
-  6-uat)
-    PREFIX="tf_state_uat"
-    ;;
-  7-prod)
+  6-prod)
     PREFIX="tf_state_prod"
+    ;;
+  7-sandbox)
+    PREFIX="tf_state_sandbox"
     ;;
 esac
 

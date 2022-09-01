@@ -2,50 +2,51 @@
 clear
 
 destroy_step_7 () {
-  terraform -chdir=7-prod init
-  terraform -chdir=7-prod destroy --auto-approve -var-file=terraform.tfvars
+  terraform -chdir=7-sandbox init
+  terraform -chdir=7-sandbox destroy --auto-approve -var-file=terraform.tfvars
 
   if [ $? != 0 ]; then
     echo "Error on step 7"
     exit 1
   else
-    echo "Prod resources destroyed. "
-    rm -rf ./7-prod/.terraform*
+    echo "sandbox resources destroyed. "
+    rm -rf ./7-sandbox/.terraform*
   fi
 
-  echo "" > ./7-prod/provider.tf
+  echo "" > ./7-sandbox/provider.tf
   destroy_step_6;
 }
 
+
 destroy_step_6 () {
-  terraform -chdir=6-uat init
-  terraform -chdir=6-uat destroy --auto-approve -var-file=terraform.tfvars
+  terraform -chdir=6-prod init
+  terraform -chdir=6-prod destroy --auto-approve -var-file=terraform.tfvars
 
   if [ $? != 0 ]; then
     echo "Error on step 6"
     exit 1
   else
-    echo "UAT resources destroyed. "
-    rm -rf ./6-uat/.terraform*
+    echo "Prod resources destroyed. "
+    rm -rf ./6-prod/.terraform*
   fi
 
-  echo "" > ./6-uat/provider.tf
-  destroy_step_5
+  echo "" > ./6-prod/provider.tf
+  destroy_step_5;
 }
 
 destroy_step_5 () {
-  terraform -chdir=5-qa init
-  terraform -chdir=5-qa destroy --auto-approve -var-file=terraform.tfvars
+  terraform -chdir=5-uatprod init
+  terraform -chdir=5-uatprod destroy --auto-approve -var-file=terraform.tfvars
 
   if [ $? != 0 ]; then
     echo "Error on step 5"
     exit 1
   else
-    echo "QA resources destroyed. "
-    rm -rf ./5-qa/.terraform*
+    echo "UATprod resources destroyed. "
+    rm -rf ./5-uatprod/.terraform*
   fi
 
-  echo "" > ./5-qa/provider.tf
+  echo "" > ./5-uatprod/provider.tf
   destroy_step_4
 }
 
@@ -147,7 +148,7 @@ if [ -z $1 ] || [ $1 == 7 ]; then
   destroy_step_7;
 fi
 
-if [ $1 == 6 ]; then
+if [ -z $1 ] || [ $1 == 6 ]; then
   destroy_step_6;
 fi
 

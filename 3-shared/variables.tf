@@ -6,3 +6,5 @@ variable "network_user_groups" {
 variable "budget" {
   default = "1000"
 }
+
+variable "folder_id" {}

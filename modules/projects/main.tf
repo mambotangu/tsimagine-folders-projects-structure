@@ -7,22 +7,22 @@ locals {
   project_id = "${var.project_id}-${random_integer.main.result}"
 }
 
-resource "google_compute_shared_vpc_service_project" "service_project" {
-  count           = var.is_service_project ? 1 : 0
-  host_project    = var.host_project_id
-  service_project = google_project.main.project_id
-  depends_on = [
-    resource.google_compute_shared_vpc_host_project.host
-  ]
-}
+# resource "google_compute_shared_vpc_service_project" "service_project" {
+#   count           = var.is_service_project ? 1 : 0
+#   host_project    = var.host_project_id
+#   service_project = google_project.main.project_id
+#   depends_on = [
+#     resource.google_compute_shared_vpc_host_project.host
+#   ]
+# }
 
-resource "google_compute_shared_vpc_host_project" "host" {
-  count   = var.svpc_host ? 1 : 0
-  project = google_project.main.project_id
-  depends_on = [
-    resource.google_project_service.main
-  ]
-}
+# resource "google_compute_shared_vpc_host_project" "host" {
+#   count   = var.svpc_host ? 1 : 0
+#   project = google_project.main.project_id
+#   depends_on = [
+#     resource.google_project_service.main
+#   ]
+# }
 resource "google_project" "main" {
   name                = var.name
   project_id          = local.project_id
