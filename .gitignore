@@ -35,5 +35,3 @@ override.tf.json
 node_modules
 
 sa-admin-caller.json
-
-.env
